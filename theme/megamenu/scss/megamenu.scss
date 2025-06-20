@@ -1,0 +1,900 @@
+// Mega Menu Styles
+// A beautiful, modern mega menu design for Moodle
+// Inspired by shadcn/ui design principles
+
+// Design Tokens (shadcn/ui inspired)
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222.2 84% 4.9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221.2 83.2% 53.3%;
+  --radius: 0.5rem;
+}
+
+[data-bs-theme="dark"] {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217.2 91.2% 59.8%;
+  --primary-foreground: 222.2 84% 4.9%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 224.3 76.3% 94.1%;
+}
+
+// Modern Variables
+$megamenu-bg: hsl(var(--popover));
+$megamenu-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+$megamenu-border-radius: var(--radius);
+$megamenu-transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+$megamenu-hover-bg: hsl(var(--accent));
+$megamenu-accent: hsl(var(--primary));
+$megamenu-text: hsl(var(--foreground));
+$megamenu-text-muted: hsl(var(--muted-foreground));
+$megamenu-border: hsl(var(--border));
+
+// Main navbar enhancement
+.navbar {
+    background: hsl(var(--background));
+    border-bottom: 1px solid $megamenu-border;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    
+    .navbar-brand {
+        font-weight: 600;
+        color: $megamenu-text;
+        transition: $megamenu-transition;
+        
+        &:hover {
+            color: $megamenu-accent;
+            transform: translateY(-1px);
+        }
+    }
+}
+
+// Mega menu container
+.megamenu-nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 auto;
+    
+    .megamenu-item {
+        position: relative;
+        
+        > a {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            color: $megamenu-text;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-decoration: none;
+            border-radius: $megamenu-border-radius;
+            transition: $megamenu-transition;
+            position: relative;
+            height: 2.25rem;
+            white-space: nowrap;
+            
+            &:hover {
+                background-color: $megamenu-hover-bg;
+                color: $megamenu-accent;
+            }
+            
+            &:focus-visible {
+                outline: 2px solid hsl(var(--ring));
+                outline-offset: 2px;
+            }
+            
+            // Icons
+            .menu-icon {
+                margin-right: 0.5rem;
+                width: 1rem;
+                height: 1rem;
+                opacity: 0.7;
+                transition: opacity 0.2s ease;
+            }
+            
+            &:hover .menu-icon {
+                opacity: 1;
+            }
+            
+            // Dropdown arrow
+            &.has-dropdown::after {
+                content: "";
+                margin-left: 0.5rem;
+                width: 0;
+                height: 0;
+                border: 3px solid transparent;
+                border-top-color: currentColor;
+                transition: transform 0.2s ease;
+            }
+            
+            &.active::after {
+                transform: rotate(180deg);
+            }
+        }
+        
+        // Mega dropdown panel
+        .megamenu-panel {
+            position: absolute;
+            top: calc(100% + 0.25rem);
+            left: 50%;
+            transform: translateX(-50%) translateY(-4px);
+            min-width: 32rem;
+            background: $megamenu-bg;
+            border: 1px solid $megamenu-border;
+            border-radius: calc($megamenu-border-radius + 2px);
+            box-shadow: $megamenu-shadow;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+            z-index: 50;
+            overflow: hidden;
+            
+            &.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+            
+            // Modern popover styling
+            &::before {
+                content: "";
+                position: absolute;
+                top: -4px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 8px;
+                height: 8px;
+                background: $megamenu-bg;
+                border-left: 1px solid $megamenu-border;
+                border-top: 1px solid $megamenu-border;
+                transform: translateX(-50%) rotate(45deg);
+                z-index: 51;
+            }
+        }
+    }
+}
+
+// Mega menu content layout
+.megamenu-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+    
+    .megamenu-column {
+        .column-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: $megamenu-text-muted;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.375rem;
+            border-bottom: 1px solid $megamenu-border;
+        }
+        
+        .column-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            
+            a {
+                display: flex;
+                align-items: flex-start;
+                padding: 0.5rem 0.75rem;
+                color: $megamenu-text;
+                text-decoration: none;
+                border-radius: $megamenu-border-radius;
+                transition: $megamenu-transition;
+                font-size: 0.875rem;
+                line-height: 1.4;
+                
+                &:hover {
+                    background-color: $megamenu-hover-bg;
+                    color: $megamenu-accent;
+                }
+                
+                &:focus-visible {
+                    outline: 2px solid hsl(var(--ring));
+                    outline-offset: 2px;
+                }
+                
+                // Icon support
+                .menu-icon {
+                    width: 1rem;
+                    height: 1rem;
+                    margin-right: 0.75rem;
+                    margin-top: 0.125rem;
+                    opacity: 0.7;
+                    transition: opacity 0.2s ease;
+                    flex-shrink: 0;
+                }
+                
+                &:hover .menu-icon {
+                    opacity: 1;
+                }
+                
+                // Description text
+                .link-description {
+                    display: block;
+                    font-size: 0.75rem;
+                    color: $megamenu-text-muted;
+                    margin-top: 0.125rem;
+                    line-height: 1.3;
+                }
+            }
+        }
+    }
+    
+    // Featured section
+    .megamenu-featured {
+        background: $megamenu-accent;
+        color: hsl(var(--primary-foreground));
+        padding: 1.25rem;
+        border-radius: $megamenu-border-radius;
+        
+        h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        p {
+            margin: 0 0 1rem 0;
+            opacity: 0.9;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        .btn-featured {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 1rem;
+            background: hsl(var(--primary-foreground));
+            color: $megamenu-accent;
+            text-decoration: none;
+            border-radius: $megamenu-border-radius;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: $megamenu-transition;
+            
+            &:hover {
+                background: hsl(var(--secondary));
+                transform: translateY(-1px);
+            }
+            
+            &:focus-visible {
+                outline: 2px solid hsl(var(--ring));
+                outline-offset: 2px;
+            }
+        }
+    }
+}
+
+// Large dropdown variation
+.megamenu-large {
+    .megamenu-panel {
+        min-width: 48rem;
+        max-width: 56rem;
+    }
+}
+
+// Mobile responsive
+@media (max-width: 991px) {
+    .megamenu-nav {
+        display: none;
+    }
+    
+    // Mobile menu styles - keep existing mobile functionality
+    .mobile-megamenu {
+        display: block;
+    }
+}
+
+// Smooth animations
+@keyframes megamenu-fade-in {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.megamenu-panel.animate-in {
+    animation: megamenu-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+// Enhanced focus styles for accessibility
+.megamenu-item > a:focus-visible,
+.column-links a:focus-visible,
+.btn-featured:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+}
+
+// Additional modern component styles
+.navbar {
+    .navbar-toggler {
+        border: 1px solid $megamenu-border;
+        border-radius: $megamenu-border-radius;
+        
+        &:focus {
+            box-shadow: 0 0 0 2px hsl(var(--ring));
+        }
+    }
+}
+
+// Search box integration
+#usernavigation {
+    .search_nav {
+        input {
+            border: 1px solid $megamenu-border;
+            border-radius: $megamenu-border-radius;
+            background: hsl(var(--background));
+            color: $megamenu-text;
+            
+            &:focus {
+                outline: none;
+                border-color: hsl(var(--ring));
+                box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+            }
+        }
+    }
+}
+
+// User menu enhancements
+.usermenu-container {
+    .dropdown-toggle {
+        border-radius: $megamenu-border-radius;
+        transition: $megamenu-transition;
+        
+        &:hover {
+            background-color: $megamenu-hover-bg;
+        }
+        
+        &:focus {
+            outline: 2px solid hsl(var(--ring));
+            outline-offset: 2px;
+        }
+    }
+}
+
+// ===============================================================
+// Modern Course Cards & Course Overview
+// ===============================================================
+
+// Modern Course Overview Container
+.modern-course-overview {
+    .course-controls-container {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: var(--radius);
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        
+        .course-filters {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            
+            @media (max-width: 768px) {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                
+                > * {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    
+    .course-grid-container {
+        margin-top: 1.5rem;
+    }
+}
+
+// Modern Course Card
+.modern-course-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    &:hover {
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        transform: translateY(-2px);
+        border-color: hsl(var(--ring));
+    }
+    
+    .course-card-header {
+        position: relative;
+        overflow: hidden;
+        
+        .course-image-link {
+            display: block;
+            text-decoration: none;
+        }
+        
+        .course-image {
+            height: 12rem;
+            background-size: cover;
+            background-position: center;
+            background-color: hsl(var(--muted));
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            
+            &::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, hsl(var(--primary) / 0.1) 0%, transparent 50%);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .course-image-overlay {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                align-items: flex-start;
+                justify-content: flex-end;
+                padding: 0.75rem;
+                
+                .course-status-badge {
+                    .hidden-badge {
+                        background: hsl(var(--destructive));
+                        color: hsl(var(--destructive-foreground));
+                        padding: 0.25rem 0.5rem;
+                        border-radius: calc(var(--radius) - 2px);
+                        font-size: 0.75rem;
+                        font-weight: 500;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                    }
+                }
+            }
+        }
+    }
+    
+    .course-card-content {
+        padding: 1.25rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        
+        .course-header {
+            .course-shortname {
+                color: hsl(var(--muted-foreground));
+                font-size: 0.75rem;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.5rem;
+            }
+            
+            .course-title {
+                margin: 0 0 0.75rem 0;
+                font-size: 1.125rem;
+                font-weight: 600;
+                line-height: 1.4;
+                
+                .course-link {
+                    color: hsl(var(--foreground));
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                    
+                    &:hover {
+                        color: hsl(var(--primary));
+                    }
+                }
+            }
+            
+            .course-category {
+                .course-category-text {
+                    color: hsl(var(--muted-foreground));
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                }
+                
+                .category-divider {
+                    color: hsl(var(--muted-foreground));
+                    margin: 0 0.5rem;
+                }
+            }
+        }
+    }
+    
+    .course-card-footer {
+        padding: 0 1.25rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: auto;
+        
+        .course-progress-container {
+            flex: 1;
+            margin-right: 0.75rem;
+            
+            .progress {
+                height: 0.375rem;
+                background: hsl(var(--muted));
+                border-radius: 9999px;
+                overflow: hidden;
+                
+                .progress-bar {
+                    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+                    transition: width 0.3s ease;
+                }
+            }
+        }
+        
+        .course-menu-container {
+            .dropdown {
+                .btn {
+                    background: transparent;
+                    border: 1px solid hsl(var(--border));
+                    color: hsl(var(--foreground));
+                    padding: 0.375rem;
+                    border-radius: calc(var(--radius) - 2px);
+                    transition: all 0.2s ease;
+                    
+                    &:hover {
+                        background: hsl(var(--accent));
+                        border-color: hsl(var(--ring));
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Course Cards Grid Layout
+.coursecards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin: 0;
+    
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    @media (min-width: 769px) and (max-width: 1024px) {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+// Override default course card styles
+.course-card,
+.theme-card {
+    &.modern-course-card {
+        .card-img-top {
+            height: auto; // Reset default height
+        }
+    }
+}
+
+// Enhanced Progress Bar
+.progress-bar {
+    position: relative;
+    overflow: visible;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: -2px;
+        width: 8px;
+        height: 8px;
+        background: hsl(var(--primary));
+        border-radius: 50%;
+        transform: translateY(-50%);
+        box-shadow: 0 0 0 2px hsl(var(--card));
+    }
+}
+
+// Enhanced filter controls styling
+.block-myoverview {
+    .d-flex.align-items-center {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: var(--radius);
+        padding: 0.75rem;
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        
+        .btn, .form-select, .form-control {
+            border-color: hsl(var(--border));
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+            border-radius: calc(var(--radius) - 2px);
+            transition: all 0.2s ease;
+            
+            &:focus {
+                border-color: hsl(var(--ring));
+                box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+            }
+            
+            &:hover {
+                border-color: hsl(var(--ring));
+            }
+        }
+    }
+}
+
+// Course grid responsiveness improvements
+.container-fluid {
+    .coursecards {
+        padding: 0;
+        
+        .modern-course-card {
+            margin: 0; // Remove default margins
+        }
+    }
+}
+
+// ===============================================================
+// Gorgeous Dashboard Redesign
+// ===============================================================
+
+// Override default Moodle dashboard styles
+#page-my-index {
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+    min-height: 100vh;
+    
+    #region-main {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+    }
+    
+    .card {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        border-radius: var(--radius);
+        overflow: hidden;
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border-color: hsl(var(--ring));
+        }
+    }
+    
+    .block {
+        margin-bottom: 1.5rem;
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+// Beautiful block headers
+.block .header {
+    background: transparent;
+    border-bottom: 1px solid hsl(var(--border));
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    
+    .title {
+        font-weight: 600;
+        color: hsl(var(--foreground));
+        
+        h2 {
+            margin: 0;
+            font-size: 1.125rem;
+        }
+    }
+}
+
+// Timeline block enhancement
+.block_timeline {
+    .timeline-event-list {
+        .event {
+            background: hsl(var(--background));
+            border: 1px solid hsl(var(--border));
+            border-radius: calc(var(--radius) - 2px);
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s ease;
+            
+            &:hover {
+                background: hsl(var(--accent));
+                border-color: hsl(var(--ring));
+                transform: translateX(4px);
+            }
+            
+            .event-name {
+                font-weight: 500;
+                color: hsl(var(--foreground));
+            }
+            
+            .event-description {
+                color: hsl(var(--muted-foreground));
+                font-size: 0.875rem;
+            }
+        }
+    }
+}
+
+// My Overview block enhancement
+.block_myoverview {
+    .courses-view {
+        margin: -0.5rem;
+        
+        .course-card {
+            margin: 0.5rem;
+        }
+    }
+    
+    .dropdown-menu {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        
+        .dropdown-item {
+            color: hsl(var(--foreground));
+            transition: all 0.2s ease;
+            
+            &:hover {
+                background: hsl(var(--accent));
+                color: hsl(var(--accent-foreground));
+            }
+        }
+    }
+}
+
+// Private files block
+.block_private_files {
+    .fp-tree {
+        background: hsl(var(--background));
+        border: 1px solid hsl(var(--border));
+        border-radius: calc(var(--radius) - 2px);
+        padding: 1rem;
+    }
+    
+    .btn {
+        background: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        border: none;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            background: hsl(var(--primary) / 0.9);
+            transform: translateY(-1px);
+        }
+    }
+}
+
+// Calendar block
+.block_calendar_month {
+    .calendar {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: calc(var(--radius) - 2px);
+        overflow: hidden;
+        
+        th {
+            background: hsl(var(--muted));
+            color: hsl(var(--foreground));
+            font-weight: 600;
+            padding: 0.75rem;
+        }
+        
+        td {
+            border-color: hsl(var(--border));
+            transition: all 0.2s ease;
+            
+            &:hover {
+                background: hsl(var(--accent));
+            }
+            
+            &.today {
+                background: hsl(var(--primary) / 0.1);
+                font-weight: 600;
+                
+                .day {
+                    color: hsl(var(--primary));
+                }
+            }
+        }
+    }
+}
+
+// Smooth page transitions
+#page-my-index {
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Enhanced buttons across dashboard
+#page-my-index {
+    .btn-primary {
+        background: hsl(var(--primary));
+        border-color: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        font-weight: 500;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        
+        &:hover {
+            background: hsl(var(--primary) / 0.9);
+            border-color: hsl(var(--primary) / 0.9);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px hsl(var(--primary) / 0.3);
+        }
+    }
+    
+    .btn-secondary {
+        background: hsl(var(--secondary));
+        border-color: hsl(var(--border));
+        color: hsl(var(--secondary-foreground));
+        transition: all 0.2s ease;
+        
+        &:hover {
+            background: hsl(var(--accent));
+            border-color: hsl(var(--ring));
+        }
+    }
+}

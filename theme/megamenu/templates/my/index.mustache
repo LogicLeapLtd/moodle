@@ -1,0 +1,483 @@
+{{!
+    Modern Dashboard Template with shadcn/ui design
+}}
+{{> core/header }}
+
+<style>
+/* Modern Dashboard Styles */
+.dashboard-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+    padding: 2rem 0;
+}
+
+.dashboard-header {
+    background: hsl(var(--card));
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    border: 1px solid hsl(var(--border));
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1) 0%, transparent 50%);
+    border-radius: 50%;
+    transform: translate(100px, -100px);
+}
+
+.dashboard-greeting {
+    position: relative;
+    z-index: 1;
+}
+
+.dashboard-greeting h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.dashboard-greeting p {
+    font-size: 1.125rem;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    border-color: hsl(var(--ring));
+}
+
+.stat-card .stat-icon {
+    width: 48px;
+    height: 48px;
+    background: hsl(var(--primary) / 0.1);
+    border-radius: calc(var(--radius) - 2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: hsl(var(--primary));
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+    margin: 0 0 0.25rem 0;
+}
+
+.stat-card p {
+    font-size: 0.875rem;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dashboard-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.dashboard-section {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    margin: 0;
+}
+
+.section-header .view-all {
+    color: hsl(var(--primary));
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.section-header .view-all:hover {
+    color: hsl(var(--primary) / 0.8);
+}
+
+.dashboard-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.quick-actions {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.quick-actions h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    margin: 0 0 1rem 0;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    border-radius: calc(var(--radius) - 2px);
+    text-decoration: none;
+    color: hsl(var(--foreground));
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.action-button:hover {
+    background: hsl(var(--accent));
+    border-color: hsl(var(--ring));
+    transform: translateX(4px);
+}
+
+.action-button .icon {
+    width: 20px;
+    height: 20px;
+    color: hsl(var(--primary));
+}
+
+.recent-activity {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.recent-activity h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    margin: 0 0 1rem 0;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid hsl(var(--border));
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.activity-icon {
+    width: 36px;
+    height: 36px;
+    background: hsl(var(--muted));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-content .title {
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.activity-content .time {
+    font-size: 0.75rem;
+    color: hsl(var(--muted-foreground));
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, 
+        hsl(var(--muted)) 25%, 
+        hsl(var(--muted) / 0.5) 50%, 
+        hsl(var(--muted)) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+</style>
+
+<div class="dashboard-container">
+    <div class="container-fluid">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="dashboard-greeting">
+                <h1>Welcome back, {{userfullname}}!</h1>
+                <p>Here's what's happening in your learning journey today.</p>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                </div>
+                <h3>{{coursecount}}</h3>
+                <p>Active Courses</p>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                        <path d="M2 17l10 5 10-5"></path>
+                        <path d="M2 12l10 5 10-5"></path>
+                    </svg>
+                </div>
+                <h3>{{assignmentcount}}</h3>
+                <p>Pending Tasks</p>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h3>{{hourslearned}}</h3>
+                <p>Hours Learned</p>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <h3>{{completionrate}}%</h3>
+                <p>Completion Rate</p>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <div class="dashboard-main">
+                <!-- Course Overview Section -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>My Courses</h2>
+                        <a href="{{config.wwwroot}}/my/courses.php" class="view-all">View all courses →</a>
+                    </div>
+                    <div id="myoverview-content">
+                        {{{ myoverview }}}
+                    </div>
+                </div>
+
+                <!-- Calendar/Timeline Section -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Upcoming Events</h2>
+                        <a href="{{config.wwwroot}}/calendar/view.php" class="view-all">View calendar →</a>
+                    </div>
+                    <div id="timeline-content">
+                        {{{ timeline }}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-sidebar">
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <a href="{{config.wwwroot}}/course/index.php" class="action-button">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                            Browse Courses
+                        </a>
+                        <a href="{{config.wwwroot}}/message/index.php" class="action-button">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            Messages
+                        </a>
+                        <a href="{{config.wwwroot}}/user/profile.php" class="action-button">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            My Profile
+                        </a>
+                        <a href="{{config.wwwroot}}/grade/report/overview/index.php" class="action-button">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            My Grades
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list">
+                        {{{ recentactivity }}}
+                    </div>
+                </div>
+
+                <!-- Private Files -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Private Files</h2>
+                    </div>
+                    <div id="privatefiles-content">
+                        {{{ privatefiles }}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#js}}
+require(['jquery', 'core/custom_interaction_events'], function($, CustomEvents) {
+    // Add smooth transitions
+    $('.stat-card').each(function(index) {
+        $(this).css({
+            'opacity': '0',
+            'transform': 'translateY(20px)'
+        }).delay(index * 100).animate({
+            'opacity': '1',
+            'transform': 'translateY(0)'
+        }, {
+            duration: 600,
+            easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+        });
+    });
+
+    // Add hover effects
+    $('.action-button').on('mouseenter', function() {
+        $(this).find('.icon').css('transform', 'scale(1.1)');
+    }).on('mouseleave', function() {
+        $(this).find('.icon').css('transform', 'scale(1)');
+    });
+});
+{{/js}}
+
+{{> core/footer }}

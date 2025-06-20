@@ -1,0 +1,289 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_megamenu/navbar
+
+    This template renders the top navbar with mega menu.
+}}
+<nav class="navbar fixed-top bg-body navbar-expand" aria-label="{{#str}}sitemenubar, admin{{/str}}">
+    <div class="container-fluid">
+        <button class="navbar-toggler aabtn d-block d-lg-none px-1 my-1 border-0" data-toggler="drawers" data-action="toggle" data-target="theme_boost-drawers-primary">
+            <span class="navbar-toggler-icon"></span>
+            <span class="visually-hidden">{{#str}}sidepanel, core{{/str}}</span>
+        </button>
+
+        <a href="{{{ config.homeurl }}}" class="navbar-brand d-none d-md-flex align-items-center m-0 me-4 p-0 aabtn">
+            {{# output.should_display_navbar_logo }}
+                <img src="{{output.get_compact_logo_url}}" class="logo me-1" alt="{{sitename}}">
+            {{/ output.should_display_navbar_logo }}
+            {{^ output.should_display_navbar_logo }}
+                {{{ sitename }}}
+            {{/ output.should_display_navbar_logo }}
+        </a>
+
+        <!-- Mega Menu Navigation -->
+        <div class="megamenu-nav d-none d-lg-flex">
+            <!-- Dashboard Menu -->
+            <div class="megamenu-item">
+                <a href="#" class="has-dropdown" data-megamenu-toggle="dashboard">
+                    <i class="fa fa-dashboard menu-icon"></i>
+                    {{#str}}myhome{{/str}}
+                </a>
+                <div class="megamenu-panel" id="megamenu-dashboard">
+                    <div class="megamenu-content">
+                        <div class="megamenu-column">
+                            <h3 class="column-title">{{#str}}dashboard{{/str}}</h3>
+                            <div class="column-links">
+                                <a href="{{config.wwwroot}}/my/">
+                                    <i class="fa fa-tachometer menu-icon"></i>
+                                    <span>
+                                        {{#str}}myhome{{/str}}
+                                        <span class="link-description">{{#str}}myhomedesc, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                                <a href="{{config.wwwroot}}/calendar/view.php">
+                                    <i class="fa fa-calendar menu-icon"></i>
+                                    <span>
+                                        {{#str}}calendar, core_calendar{{/str}}
+                                        <span class="link-description">{{#str}}calendardesc, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                                <a href="{{config.wwwroot}}/user/files.php">
+                                    <i class="fa fa-folder menu-icon"></i>
+                                    <span>
+                                        {{#str}}privatefiles{{/str}}
+                                        <span class="link-description">{{#str}}privatefilesdesc, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="megamenu-column">
+                            <h3 class="column-title">{{#str}}recentactivity{{/str}}</h3>
+                            <div class="column-links">
+                                <a href="{{config.wwwroot}}/report/log/index.php">
+                                    <i class="fa fa-list menu-icon"></i>
+                                    <span>
+                                        {{#str}}logs{{/str}}
+                                        <span class="link-description">{{#str}}logsdesc, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                                <a href="{{config.wwwroot}}/report/stats/index.php">
+                                    <i class="fa fa-bar-chart menu-icon"></i>
+                                    <span>
+                                        {{#str}}stats{{/str}}
+                                        <span class="link-description">{{#str}}statsdesc, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="megamenu-featured">
+                            <h4>{{#str}}quickaccess, theme_megamenu{{/str}}</h4>
+                            <p>{{#str}}quickaccessdesc, theme_megamenu{{/str}}</p>
+                            <a href="{{config.wwwroot}}/my/" class="btn-featured">{{#str}}gotodashboard, theme_megamenu{{/str}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses Menu -->
+            <div class="megamenu-item megamenu-large">
+                <a href="#" class="has-dropdown" data-megamenu-toggle="courses">
+                    <i class="fa fa-graduation-cap menu-icon"></i>
+                    {{#str}}courses{{/str}}
+                </a>
+                <div class="megamenu-panel" id="megamenu-courses">
+                    <div class="megamenu-content">
+                        <div class="megamenu-column">
+                            <h3 class="column-title">{{#str}}mycourses{{/str}}</h3>
+                            <div class="column-links">
+                                <a href="{{config.wwwroot}}/my/courses.php">
+                                    <i class="fa fa-book menu-icon"></i>
+                                    <span>
+                                        {{#str}}mycourses{{/str}}
+                                        <span class="link-description">{{#str}}mycoursesdesc, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                                <a href="{{config.wwwroot}}/course/index.php">
+                                    <i class="fa fa-list-alt menu-icon"></i>
+                                    <span>
+                                        {{#str}}fulllistofcourses{{/str}}
+                                        <span class="link-description">{{#str}}browsecourses, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                                <a href="{{config.wwwroot}}/course/search.php">
+                                    <i class="fa fa-search menu-icon"></i>
+                                    <span>
+                                        {{#str}}searchcourses{{/str}}
+                                        <span class="link-description">{{#str}}findcourse, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="megamenu-column">
+                            <h3 class="column-title">{{#str}}coursecategories{{/str}}</h3>
+                            <div class="column-links">
+                                <a href="{{config.wwwroot}}/course/index.php?categoryid=1">
+                                    <i class="fa fa-folder-open menu-icon"></i>
+                                    <span>
+                                        {{#str}}miscellaneous{{/str}}
+                                        <span class="link-description">{{#str}}defaultcategory, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="megamenu-column">
+                            <h3 class="column-title">{{#str}}coursemanagement{{/str}}</h3>
+                            <div class="column-links">
+                                <a href="{{config.wwwroot}}/course/management.php">
+                                    <i class="fa fa-cogs menu-icon"></i>
+                                    <span>
+                                        {{#str}}coursemgmt{{/str}}
+                                        <span class="link-description">{{#str}}managecourses, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                                <a href="{{config.wwwroot}}/course/request.php">
+                                    <i class="fa fa-plus-circle menu-icon"></i>
+                                    <span>
+                                        {{#str}}requestcourse{{/str}}
+                                        <span class="link-description">{{#str}}requestnewcourse, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Site Administration (if admin) -->
+            {{#is_siteadmin}}
+            <div class="megamenu-item megamenu-large">
+                <a href="#" class="has-dropdown" data-megamenu-toggle="admin">
+                    <i class="fa fa-cog menu-icon"></i>
+                    {{#str}}administrationsite{{/str}}
+                </a>
+                <div class="megamenu-panel" id="megamenu-admin">
+                    <div class="megamenu-content">
+                        <div class="megamenu-column">
+                            <h3 class="column-title">{{#str}}general{{/str}}</h3>
+                            <div class="column-links">
+                                <a href="{{config.wwwroot}}/admin/search.php">
+                                    <i class="fa fa-wrench menu-icon"></i>
+                                    <span>
+                                        {{#str}}administrationsite{{/str}}
+                                        <span class="link-description">{{#str}}mainsettings, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                                <a href="{{config.wwwroot}}/admin/settings.php?section=themesettings">
+                                    <i class="fa fa-paint-brush menu-icon"></i>
+                                    <span>
+                                        {{#str}}themes{{/str}}
+                                        <span class="link-description">{{#str}}themesettings, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                                <a href="{{config.wwwroot}}/admin/plugins.php">
+                                    <i class="fa fa-puzzle-piece menu-icon"></i>
+                                    <span>
+                                        {{#str}}plugins, admin{{/str}}
+                                        <span class="link-description">{{#str}}manageplugins, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="megamenu-column">
+                            <h3 class="column-title">{{#str}}users{{/str}}</h3>
+                            <div class="column-links">
+                                <a href="{{config.wwwroot}}/admin/user.php">
+                                    <i class="fa fa-users menu-icon"></i>
+                                    <span>
+                                        {{#str}}userlist{{/str}}
+                                        <span class="link-description">{{#str}}browseusers, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                                <a href="{{config.wwwroot}}/user/editadvanced.php?id=-1">
+                                    <i class="fa fa-user-plus menu-icon"></i>
+                                    <span>
+                                        {{#str}}addnewuser{{/str}}
+                                        <span class="link-description">{{#str}}createnewuser, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                                <a href="{{config.wwwroot}}/admin/roles/manage.php">
+                                    <i class="fa fa-id-badge menu-icon"></i>
+                                    <span>
+                                        {{#str}}defineroles, role{{/str}}
+                                        <span class="link-description">{{#str}}rolesandperms, theme_megamenu{{/str}}</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="megamenu-featured">
+                            <h4>{{#str}}quickadmin, theme_megamenu{{/str}}</h4>
+                            <p>{{#str}}quickadmindesc, theme_megamenu{{/str}}</p>
+                            <a href="{{config.wwwroot}}/admin/search.php" class="btn-featured">{{#str}}gotoadmin, theme_megamenu{{/str}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/is_siteadmin}}
+
+            <!-- More Menu Items -->
+            <div class="megamenu-item">
+                <a href="{{config.wwwroot}}/mod/forum/index.php">
+                    <i class="fa fa-comments menu-icon"></i>
+                    {{#str}}forums, forum{{/str}}
+                </a>
+            </div>
+
+            <div class="megamenu-item">
+                <a href="{{config.wwwroot}}/badges/mybadges.php">
+                    <i class="fa fa-certificate menu-icon"></i>
+                    {{#str}}badges, badges{{/str}}
+                </a>
+            </div>
+        </div>
+
+        <ul class="navbar-nav d-none d-lg-flex my-1 px-1">
+            <!-- page_heading_menu -->
+            {{{ output.page_heading_menu }}}
+        </ul>
+
+        <div id="usernavigation" class="navbar-nav ms-auto h-100">
+            {{# output.search_box }}
+                {{{ output.search_box }}}
+                <div class="divider border-start h-75 align-self-center mx-1"></div>
+            {{/output.search_box}}
+            {{#langmenu}}
+                {{> theme_boost/language_menu }}
+                <div class="divider border-start h-75 align-self-center mx-1"></div>
+            {{/langmenu}}
+            {{{ output.navbar_plugin_output }}}
+            <div class="d-flex align-items-stretch usermenu-container" data-region="usermenu">
+                {{#usermenu}}
+                    {{> core/user_menu }}
+                {{/usermenu}}
+            </div>
+            {{{ output.edit_switch }}}
+        </div>
+    </div>
+</nav>
+
+{{> theme_boost/primary-drawer-mobile }}
+
+{{#js}}
+require(['theme_megamenu/megamenu'], function(MegaMenu) {
+    MegaMenu.init();
+});
+{{/js}}

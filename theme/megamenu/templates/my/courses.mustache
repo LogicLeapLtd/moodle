@@ -1,0 +1,46 @@
+<div class="my-courses-container">
+  <h2 class="course-list-heading">{{#str}} mycourses, core {{/str}}</h2>
+  
+  <div class="course-filters mb-4">
+    <button class="btn-filter active" data-filter="all">All Courses</button>
+    <button class="btn-filter" data-filter="inprogress">In Progress</button>
+    <button class="btn-filter" data-filter="future">Upcoming</button>
+    <button class="btn-filter" data-filter="past">Completed</button>
+  </div>
+
+  <div class="course-grid">
+    {{#courses}}
+    <div class="course-card" data-course-status="{{progress.status}}">
+      <div class="course-card-header">
+        <img src="{{image}}" alt="{{fullname}}" class="course-thumbnail">
+        <div class="course-status-badge">{{progress.status}}</div>
+      </div>
+      
+      <div class="course-card-body">
+        <h3 class="course-title">{{{fullname}}}</h3>
+        
+        <div class="progress-container">
+          <div class="course-progress" style="width: {{progress.percentage}}%"></div>
+          <span class="progress-text">{{progress.percentage}}% Complete</span>
+        </div>
+
+        <div class="course-meta">
+          <div class="meta-item">
+            <i class="fa fa-calendar"></i>
+            {{#startdate}}{{#userdate}} {{.}}, {{#str}} strftimedate {{/str}} {{/userdate}}{{/startdate}}
+          </div>
+          <div class="meta-item">
+            <i class="fa fa-tasks"></i>
+            {{activitysummary}}
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card-footer">
+        <a href="{{viewurl}}" class="btn btn-primary">Resume</a>
+        <a href="{{gradeurl}}" class="btn btn-secondary">Grades</a>
+      </div>
+    </div>
+    {{/courses}}
+  </div>
+</div> 

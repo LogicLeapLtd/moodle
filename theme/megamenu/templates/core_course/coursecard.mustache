@@ -1,0 +1,78 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template core_course/coursecard
+
+    Modern course card with shadcn/ui design principles.
+}}
+<div class="modern-course-card group" role="listitem"
+    data-region="course-content"
+    data-course-id="{{{id}}}">
+    
+    <!-- Course Image/Header -->
+    <div class="course-card-header">
+        <a href="{{viewurl}}" tabindex="-1" class="course-image-link">
+            <div class="course-image" 
+                 style='background-image: url("{{{courseimage}}}");'
+                 aria-label="{{fullname}}">
+                <div class="course-image-overlay">
+                    <div class="course-status-badge">
+                        {{^visible}}
+                            <span class="hidden-badge">
+                                {{#str}} hiddenfromstudents {{/str}}
+                            </span>
+                        {{/visible}}
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Course Content -->
+    <div class="course-card-content" id="course-info-container-{{id}}-{{uniqid}}">
+        <div class="course-header">
+            {{#showshortname}}
+                <div class="course-shortname">
+                    <span class="visually-hidden">
+                        {{#str}}aria:courseshortname, core_course{{/str}}
+                    </span>
+                    {{{shortname}}}
+                </div>
+            {{/showshortname}}
+            
+            <h3 class="course-title">
+                <a href="{{viewurl}}" class="course-link">
+                    {{> core_course/favouriteicon }}
+                    <span class="visually-hidden">
+                        {{#str}}aria:coursename, core_course{{/str}}
+                    </span>
+                    {{$coursename}}{{/coursename}}
+                </a>
+            </h3>
+            
+            <div class="course-category">
+                {{$coursecategory}}{{/coursecategory}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Footer -->
+    <div class="course-card-footer">
+        {{$progress}}{{/progress}}
+        {{$menu}}{{/menu}}
+    </div>
+</div>
